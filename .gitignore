@@ -1,0 +1,9 @@
+/server/Lib
+/server/Scripts
+/server/Include
+/server/pyvenv.cfg
+/server/src/__pycache__
+/server/src/accounts/__pycache__
+/server/src/migrations
+/server/src/.env
+/server/src/registers/__pycache__
