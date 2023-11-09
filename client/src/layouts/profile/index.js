@@ -41,10 +41,29 @@ import Welcome from "../profile/components/Welcome/index";
 import yashwanth from 'assets/images/yashwanth.png'
 import fardeen from "assets/images/fardeen_khan.jpg"
 import ajay from "assets/images/ajay.png"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "variables/charts";
 function Overview() {
+  const [userinfo,setinfo] = useState()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get(`${BASE_URL}/api/account`, { withCredentials: true })
+        setinfo(resp.data); 
+      } catch (error) {
+        location.href = 'authentication/sign-in';
+        alert('Token expired, login again');
+      }
+    };
+    if (!userinfo){
+    fetchData();
+    }
+  }, [])
   return (
-    <DashboardLayout>
-      <Header />
+    <div>
+  { userinfo ? (<DashboardLayout>
+      <Header info={userinfo} />
       <VuiBox mt={5} mb={3} xs={12}>
         <Grid
           container
@@ -67,7 +86,7 @@ function Overview() {
               },
             })}
           >
-            <Welcome />
+            <Welcome info={userinfo} />
           </Grid>
           <Grid
             item
@@ -79,13 +98,7 @@ function Overview() {
             <ProfileInfoCard
               title="profile information"
               // description="Hi, I'm Mark Johnson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              info={{
-                fullName: "Mark Johnson",
-                age: "19",
-                mobile: "(44) 123 1234 123",
-                email: "mark@simmmple.com",
-                location: "",
-              }}
+              info={userinfo}
               social={[
                 {
                   link: "https://www.facebook.com",
@@ -185,7 +198,8 @@ function Overview() {
       </Grid>
 
       <Footer />
-    </DashboardLayout>
+    </DashboardLayout>) : <div></div>}
+    </div>
   );
 }
 

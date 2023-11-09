@@ -6,6 +6,8 @@ import VuiTypography from 'components/VuiTypography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import axios from "axios";
+import { BASE_URL } from "variables/charts";
 
 function EditableCard({ info, description, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,17 +30,15 @@ function EditableCard({ info, description, onEdit }) {
 
   const handleSave = () => {
     setIsEditing(false);
-    onEdit({
-      info: editedInfo,
-      description: editedDescription,
-    });
+    axios.post(`${BASE_URL}/api/account`,editedInfo,{withCredentials:true}).then((resp)=>{
+      alert("Saved Successfully")
+    }).catch((error)=>{
+      alert("Token expired Login again")
+      location.href = 'authentication/sign-in'
+    })
   };
 
-  const handleCancel = () => {
-    setIsEditing(false);
-    setEditedInfo(info);
-    setEditedDescription(description);
-  };
+ 
 
   return (
     <Card sx={{ height: '100%', padding: '16px', borderRadius: '16px', boxShadow: '0 0 4px rgba(0, 0, 0, 0.2)',overflowY: 'auto'  }}>
@@ -47,7 +47,6 @@ function EditableCard({ info, description, onEdit }) {
           <>
             <Button variant="contained" onClick={handleSave} sx = {{marginRight:"20px"}}>Save</Button>
 
-            <Button variant="contained" onClick={handleCancel}>Cancel</Button>
           </>
         ) : (
           <Button variant="contained" onClick={() => setIsEditing(true)}>Edit</Button>
@@ -61,8 +60,8 @@ function EditableCard({ info, description, onEdit }) {
           </VuiTypography>
           <TextField
             variant="outlined"
-            value={editedInfo.fullName}
-            onChange={(e) => setEditedInfo({ ...editedInfo, fullName: e.target.value })}
+            value={editedInfo.name}
+            onChange={(e) => setEditedInfo({ ...editedInfo, name: e.target.value })}
             // Extend the width to 100%
             multiline // Allow multiple lines
             rows={2} // Adjust the number of rows as needed
@@ -70,7 +69,7 @@ function EditableCard({ info, description, onEdit }) {
         </VuiBox>
       ) : (
         <VuiTypography variant="lg" fontWeight="bold" color="text" textTransform="capitalize">
-          {editedInfo.fullName}
+          {editedInfo.name}
         </VuiTypography>
       )}
     </VuiBox>      
@@ -89,15 +88,15 @@ function EditableCard({ info, description, onEdit }) {
             <TextField
               variant="outlined"
               fullWidth
-              value={editedInfo.mobile}
-              onChange={(e) => setEditedInfo({ ...editedInfo, mobile: e.target.value })}
+              value={editedInfo.phone_no}
+              onChange={(e) => setEditedInfo({ ...editedInfo, phone_no: e.target.value })}
               rows={5} // Adjust the number of rows as needed
               style={{ marginBottom: 1, width: '100%'}}
             />
             </>
           ) : (
             <VuiTypography variant="body1" color="text" fontWeight="regular">
-              Mobile: {editedInfo.mobile}
+              Mobile: {editedInfo.phone_no}
             </VuiTypography>
           )}
         </VuiBox>
@@ -152,12 +151,12 @@ function EditableCard({ info, description, onEdit }) {
             <Select
       options={countries}
       value={selectedCountry}
-      onChange={(selectedOption) => {setSelectedCountry(selectedOption);console.log(selectedOption);setEditedInfo({ ...editedInfo, location:selectedOption.label})}}
+      onChange={(selectedOption) => {setSelectedCountry(selectedOption);console.log(selectedOption);setEditedInfo({ ...editedInfo, address:selectedOption.label})}}
     />
                 </>
           ) : (
             <VuiTypography variant="body1" color="text" fontWeight="regular">
-              Location: {editedInfo.location}
+              Location: {editedInfo.address}
             </VuiTypography>
           )}
         </VuiBox>

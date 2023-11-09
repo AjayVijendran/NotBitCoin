@@ -23,13 +23,15 @@ import App from "App";
 
 // Vision UI Dashboard React Context Provider
 import { VisionUIControllerProvider } from "context";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
 
 root.render(<BrowserRouter>
   <VisionUIControllerProvider>
+    <ToastContainer/>
     <App />
   </VisionUIControllerProvider>
 </BrowserRouter>)

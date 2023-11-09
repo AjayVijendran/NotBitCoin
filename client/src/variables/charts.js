@@ -362,3 +362,5 @@ export const lineChartOptionsProfile2 = {
   },
   colors: ["#0075FF"],
 };
+
+export const BASE_URL = 'http://localhost:5000'

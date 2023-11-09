@@ -10,7 +10,6 @@ from werkzeug.security import check_password_hash,generate_password_hash
 from ..accounts.models import Account
 def login():
     det = request.json
-    token  = jwt.encode({'id':'1234','exp':datetime.datetime.utcnow()+datetime.timedelta(minutes=45)},os.getenv('JWT_SECRET_KEY'))
     try:
         details = Auth.query.filter_by(email=det['email']).first()
         if check_password_hash(details.pwd,det['pwd']):

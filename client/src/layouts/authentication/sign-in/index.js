@@ -11,7 +11,7 @@ import VuiInput from "components/VuiInput";
 import VuiButton from "components/VuiButton";
 import VuiSwitch from "components/VuiSwitch";
 import GradientBorder from "examples/GradientBorder";
-
+import axios from "axios";
 import radialGradient from "assets/theme/functions/radialGradient";
 import palette from "assets/theme/base/colors";
 import borders from "assets/theme/base/borders";
@@ -19,12 +19,23 @@ import borders from "assets/theme/base/borders";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 import bgSignIn from "assets/images/signInImage.png";
+import { BASE_URL } from "variables/charts";
 
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
-
+  const [userinfo,setinfo] = useState({
+    email : '',
+    pwd :''
+  })
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+  const handleSubmit = () =>{
+    axios.post(`${BASE_URL}/api/login`,userinfo,{withCredentials : true}).then((resp)=>{
+      location.href = '/dashboard',
+      alert("Logged in Successfully")
+    }).catch((e)=>{
+      alert(e?.error?.message||'Something Wrong')
+    })
+  }
   return (
     <CoverLayout
       title="Nice to see you!"
@@ -49,7 +60,10 @@ function SignIn() {
               palette.gradients.borderLight.angle
             )}
           >
-            <VuiInput type="email" placeholder="Your email..." fontWeight="500" />
+            <VuiInput 
+            value={userinfo.email} 
+            onChange = {(e)=>{setinfo({...userinfo,email:e.target.value})}}
+            type="email" placeholder="Your email..." fontWeight="500" />
           </GradientBorder>
         </VuiBox>
         <VuiBox mb={2}>
@@ -71,6 +85,8 @@ function SignIn() {
             <VuiInput
               type="password"
               placeholder="Your password..."
+              value = {userinfo.pwd}
+              onChange = {(e)=>{setinfo({...userinfo,pwd:e.target.value})}}
               sx={({ typography: { size } }) => ({
                 fontSize: size.sm,
               })}
@@ -90,7 +106,7 @@ function SignIn() {
           </VuiTypography>
         </VuiBox>
         <VuiBox mt={4} mb={1}>
-          <VuiButton color="info" fullWidth>
+          <VuiButton onClick = {handleSubmit} color="info" fullWidth>
             SIGN IN
           </VuiButton>
         </VuiBox>

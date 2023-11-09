@@ -76,7 +76,6 @@ function Dashboard() {
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []);
-  console.log(btcPrice)
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -93,13 +92,6 @@ function Dashboard() {
                 )}</p>
                 icon={{ color: "info", component: <IoWallet size="22px" color="white" /> }}
               />
-            </Grid>
-          </Grid>
-        </VuiBox>
-        <VuiBox mb={3}>
-          <Grid container spacing="18px">
-            <Grid item xs={12} lg={12} xl={15}>
-              <WelcomeMark />
             </Grid>
           </Grid>
         </VuiBox>
@@ -121,8 +113,8 @@ function Dashboard() {
             </Grid>
           </Grid>
         </VuiBox>
-        <Grid container spacing={3} direction="row" alignItems="stretch">
-          <Grid item xs={12} md={6} lg={12}>
+        <Grid container spacing={3} display = "flex" flexDirection="column" justifyContent="center" alignItems="center">
+          <Grid item  xl = {9} xs={10} md={6} lg={10} alignItems="center">
             <Projects />
           </Grid>
         </Grid>

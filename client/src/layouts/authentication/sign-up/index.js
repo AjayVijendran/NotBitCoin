@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-
+import axios from "axios";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 
 // Vision UI Dashboard React components
@@ -15,7 +15,6 @@ import VuiInput from "components/VuiInput";
 import VuiButton from "components/VuiButton";
 import VuiSwitch from "components/VuiSwitch";
 import GradientBorder from "examples/GradientBorder";
-
 // Vision UI Dashboard assets
 import radialGradient from "assets/theme/functions/radialGradient";
 import rgba from "assets/theme/functions/rgba";
@@ -27,12 +26,25 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgSignIn from "assets/images/signUpImage.png";
-
+import { BASE_URL } from "variables/charts";
+import {toast}  from "react-toastify";
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
-
+  const [userinfo,setinfo] = useState({
+    name : '',
+    email : '',
+    pwd : ''
+  })
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+  const handleSubmit =()=>{
+    axios.post(`${BASE_URL}/api/reg`,
+      userinfo).then((resp)=>{
+      location.href = '/authentication/sign-in'
+      alert("Registered successfully , You can login now")
+    }).catch((e)=>{
+      alert(e?.error?.message ||"Something went wrong")
+    })
+  }
   return (
     <CoverLayout
     
@@ -175,6 +187,8 @@ function SignIn() {
               )}
             >
               <VuiInput
+                value = {userinfo.name}
+                onChange = {(e)=>{setinfo({...userinfo,name:e.target.value})}}
                 placeholder="Your full name..."
                 sx={({ typography: { size } }) => ({
                   fontSize: size.sm,
@@ -199,6 +213,8 @@ function SignIn() {
               )}
             >
               <VuiInput
+                value = {userinfo.email}
+                onChange = {(e)=>{setinfo({...userinfo,email:e.target.value})}}
                 type="email"
                 placeholder="Your email..."
                 sx={({ typography: { size } }) => ({
@@ -224,6 +240,8 @@ function SignIn() {
               )}
             >
               <VuiInput
+                value = {userinfo.pwd}
+                onChange = {(e)=>{setinfo({...userinfo,pwd:e.target.value})}}
                 type="password"
                 placeholder="Your password..."
                 sx={({ typography: { size } }) => ({
@@ -245,7 +263,7 @@ function SignIn() {
             </VuiTypography>
           </VuiBox>
           <VuiBox mt={4} mb={1}>
-            <VuiButton color="info" fullWidth>
+            <VuiButton color="info" fullWidth onClick={handleSubmit}>
               SIGN UP
             </VuiButton>
           </VuiBox>

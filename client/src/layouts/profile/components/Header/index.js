@@ -9,8 +9,7 @@ import VuiBox from 'components/VuiBox';
 import VuiTypography from 'components/VuiTypography';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import burceMars from 'assets/images/avatar-simmmple.png';
-
-function Header() {
+function Header({info}) {
   const [isEditing, setIsEditing] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
 
@@ -67,10 +66,10 @@ function Header() {
               flexDirection="column"
             >
               <VuiTypography variant="lg" color="white" fontWeight="bold">
-                Mark Johnson
+                {info.name}
               </VuiTypography>
               <VuiTypography variant="button" color="text" fontWeight="regular">
-                mark@simmmple.com
+                {info.email}
               </VuiTypography>
             </VuiBox>
           </Grid>

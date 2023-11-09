@@ -36,15 +36,27 @@ import Table from "examples/Tables/Table";
 import data from "layouts/dashboard/components/Projects/data";
 import React from 'react';
 import CalanderPick from "./calander";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from "@mui/material";
-
+import axios from "axios";
+import { BASE_URL } from "variables/charts";
+import { Grid } from "carbon-components-react";
 function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
-
+  const [selectedDate, setSelectedDate] = useState(null);
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-
+  const [result,setresult] = useState(null)
+  const handlesubmit = () =>{
+    console.log(selectedDate)
+    axios.post(`${BASE_URL}/api/model`,{'dates':selectedDate.toISOString().split('T')[0]}).then((resp)=>{
+      setresult(resp.data.result)
+    }).catch((e)=>{
+      alert(e)
+    })
+  }
   const renderMenu = (
     <Menu
       id="simple-menu"
@@ -68,15 +80,26 @@ function Projects() {
 
   return (
     <Card
+      
       sx={{
         height: '380px',
       }}
     >
       <h2 style={{ color: 'white' }}>Select a Date</h2>
-        <CalanderPick />
-        <Button variant="contained" color="primary" sx = {{marginTop:"20px", width : "50px"}}>
+      <div className="calendar-picker">
+          <DatePicker
+            selected={selectedDate}
+            onChange={date => setSelectedDate(date)}
+          />
+      </div>
+        <Button onClick={handlesubmit} variant="contained" color="primary" sx = {{marginTop:"20px", width : "50px"}}>
           Predict
         </Button>
+        <Grid>
+        {result ? (<VuiTypography color="text" sx = {{marginTop:"20px", width : "100%"}}>
+          Result : {result}
+        </VuiTypography>):<div></div>}
+        </Grid>
     </Card>
   );
 }

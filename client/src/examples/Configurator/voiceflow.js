@@ -7,15 +7,18 @@ const AVATAR = 'https://picsum.photos/seed/1/80/80';
 
 export const MyChat = () => {
   const [open, setOpen] = useState(true);
-
   const runtime = useRuntime({
-    verify: { authorization: 'VF.DM.6533781499304a00070bc5f2.gjJdO2YNjQIxfvew' },
-    session: { userID: '1' },
+    verify: { authorization: 'VF.DM.654cb02d1cb23a00074afe14.0leujyWjnO2asG1I' },
+    session: { userID: 'gav' },
   });
 
   const handleLaunch = async () => {
     setOpen(true);
-    await runtime.launch();
+    try{
+      runtime.launch();
+    }catch(error){
+      console.log(error)
+    }
   };
 
   const handleEnd = () => {
@@ -56,6 +59,7 @@ if(open){
           isLoading={!runtime.session.turns.length}
           onStart={runtime.launch}
           onSend={runtime.reply}
+          onEnd={handleEnd}
         >
           {runtime.session.turns.map((turn, turnIndex) =>
             match(turn)
