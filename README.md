@@ -10,6 +10,14 @@ NotBTC is a web-based application that predicts Bitcoin prices using time series
 - **Facebook Prophet Integration:** Leverages the power of Facebook Prophet for robust forecasting.
 - **Web Interface:** Access predictions through a user-friendly web interface.
 
+## Deployment on AWS
+
+NotBTC is deployed on Amazon Web Services (AWS) for robust and scalable performance.
+
+## Backend Data Storage
+
+User data is securely stored in a PostgreSQL database.
+
 ## Usage
 
 1. Clone the repository:
